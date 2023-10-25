@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Services.Api_Services
 {
-    public class ConfigBotServices
+    public class ConfigBotService
     {
 
     }

@@ -9,12 +9,14 @@ namespace Infrastructure.Repositories
         public UserRepository(AppDbContext context) :base(context) { }
 
 
-        /*public List<User> GetAllByGuildId(ulong guildId)
+
+        public override IEnumerable<User> GetAllById(ulong id)
         {
             var userList = _context.Set<User>().
-                Where(g => g.GuildId == guildId).ToList();
+                Where(g => g.GuildId == id).ToList();
 
-            return userList.Any() ? userList : new List<User>();
-        }*/
+            return userList.Any() ? userList : Enumerable.Empty<User>();
+        }
+
     }
 }

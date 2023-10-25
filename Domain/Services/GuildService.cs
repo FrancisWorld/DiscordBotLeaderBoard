@@ -18,9 +18,17 @@ namespace Domain.Services
 
 
 
-        public void AddGuildToDatabase(ulong guildId, string nameId, ulong ownerId)
+        public void AddGuildToDatabase(ulong guildId, string guildName, ulong ownerId)
         {
-            //_repository.Save(new Guild);
+            if (_repository.GetById(guildId) is null)
+            {
+
+                var newGuild = new Guild(guildId, guildName, ownerId);
+
+                newGuild.RankingTypes = RankingTypes.ByKills;
+
+                _repository.Save(newGuild);
+            }
         }
     }
 }

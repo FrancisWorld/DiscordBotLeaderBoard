@@ -11,7 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.DI", "Bot.DI\Bot.DI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{5591ED6C-6641-4D12-828A-065C6F61CEC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot.API", "Bot.API\Bot.API.csproj", "{7FA1FD5C-B16D-4A9C-B208-66610A69B373}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.API", "Bot.API\Bot.API.csproj", "{7FA1FD5C-B16D-4A9C-B208-66610A69B373}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36165BA0-C072-4EF0-A55C-8D3C4C32BC25} = {36165BA0-C072-4EF0-A55C-8D3C4C32BC25}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

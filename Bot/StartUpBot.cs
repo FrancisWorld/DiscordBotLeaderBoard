@@ -1,5 +1,8 @@
 using Bot.Events;
 using Bot.SlashCommands;
+using DSharpPlus.Interactivity.Enums;
+using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.Interactivity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bot
@@ -41,6 +44,15 @@ namespace Bot
 
             //Registro de comandos de barra
             slash.RegisterCommands<UserCommands>();
+
+            client.UseInteractivity(new InteractivityConfiguration
+            {
+                PaginationBehaviour = PaginationBehaviour.WrapAround,
+                PaginationDeletion = PaginationDeletion.KeepEmojis,
+                PaginationEmojis = new PaginationEmojis(),
+                PollBehaviour = PollBehaviour.KeepEmojis,
+                Timeout = TimeSpan.FromMinutes(1),
+            });
 
             Client = client;
 

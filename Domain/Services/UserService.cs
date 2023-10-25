@@ -7,51 +7,57 @@ namespace Domain.Services
 {
     public class UserService
     {
-        private readonly IRepository<User> _repository;
+        private readonly IRepository<User> _userRepository;
         private readonly IApiConsumer _api;
         private readonly IUserCache _cache;
+        private readonly IRepository<Guild> _guildRepository;
 
-        public UserService(IRepository<User> repository, IApiConsumer api, IUserCache cache)
+        public UserService(IRepository<User> repository, 
+            IApiConsumer api, 
+            IUserCache cache, 
+            IRepository<Guild> guildRepository)
         {
-            _repository = repository;
+            _userRepository = repository;
             _api = api;
             _cache = cache;
+            _guildRepository = guildRepository;
         }
 
 
-        public List<User> GetRankByGuildId(ulong guildId)
+        public List<string> GetRankByGuildId(ulong guildId)
         {
             var cacheUsers = _cache.VefiryCache(guildId);
+            var guild = _guildRepository.GetById(guildId);
+
 
             if (!cacheUsers.Any())
             {
 
-                var users = _repository.GetAll();
+                var users = _userRepository.GetAllById(guildId);
 
                 if (!users.Any())
                 {
-                    return Enumerable.Empty<User>().ToList();
+                    return Enumerable.Empty<string>().ToList();
                 }
 
-                
+
                 var rankUsers = users
-                    .Where(x => x.GuildId == guildId)
-                    .Where(x => x.IsRanked);
+                    .Where(x => x.IsRanked).ToList();
 
-                if (rankUsers.Any())
-                {
-                    _cache.SetCache(guildId, rankUsers.ToList());
+                _cache.SetCache(guildId, rankUsers);
 
-                    return rankUsers.OrderBy(x => x.RankPoints).ToList();
-                }
+                return AllToString(rankUsers.OrderBy(
+                    x => x.RankPoints)
+                    .ToList(), guild.RankingTypes);
+
             }
 
             else
             {
-                return cacheUsers.OrderBy(x => x.RankPoints).ToList();
+                return AllToString(cacheUsers.OrderBy(
+                    x => x.RankPoints)
+                    .ToList(), guild.RankingTypes);
             }
-
-            return Enumerable.Empty<User>().ToList();
 
         }
 
@@ -62,6 +68,9 @@ namespace Domain.Services
         {
             try
             {
+
+                int rankPoints = 0;
+                
                 //Verifica conta de usuário na API do jogo
                 if (!_api.CheckAccountExists(gameNickName))
                     return "Seu nick não corresponde a nenhuma" +
@@ -70,14 +79,18 @@ namespace Domain.Services
                 else
                 {
                     //Verifica se conta já está salva no banco
-                    var userInDb = _repository.GetById(id);
+                    var userInDb = _userRepository.GetById(id);
 
                     if (userInDb is not null)
                         return "Você já está registrado!";
 
-                    #region Logica rankeamento
+                    var guild = _guildRepository.GetById(guildId);
 
-                    //verificar config da guilda
+                    #region Logica de rankeamento
+
+                    if (guild.RankingTypes == RankingTypes.ByKills)
+                        rankPoints = _api.GetKillStats(gameNickName);
+
 
                     #endregion
 
@@ -89,8 +102,9 @@ namespace Domain.Services
                         true);
 
                     user.GuildId = guildId;
+                    user.RankPoints = rankPoints;
 
-                    _repository.Save(user);
+                    _userRepository.Save(user);
 
                     
                 }
@@ -104,6 +118,43 @@ namespace Domain.Services
                 return ex.Message;
             }
         }
+
+
+
+
+        private List<string> AllToString(List<User> userList, RankingTypes rankingType)
+        {
+            string result = "";
+            List<string> resultList = new List<string>();
+            int index = 1;
+            string rankingName;
+
+            if (rankingType == RankingTypes.ByKills)
+                rankingName = "Kills";
+
+            else if (rankingType == RankingTypes.ByWinRate)
+                rankingName = "Win Rate";
+
+            else
+                rankingName = "Xp";
+
+
+            foreach (var item in userList)
+            {
+                result += $"{index} - {item.DiscordNickName} | {rankingName} : *{item.RankPoints}*\n";
+
+                if (index % 10 == 0 || index == userList.Count)
+                {
+                    resultList.Add(result);
+                    result = "";
+                }
+
+                index++;
+            }
+
+            return resultList;
+        }
+
 
     }
 }

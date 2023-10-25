@@ -45,7 +45,9 @@ namespace Bot.Events
 
         private async Task AdicionarGuilda(DiscordClient s, GuildCreateEventArgs e)
         {
-
+            _guildService.AddGuildToDatabase(e.Guild.Id, 
+                e.Guild.Name, 
+                e.Guild.OwnerId);
         }
     }
 }

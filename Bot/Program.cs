@@ -13,7 +13,7 @@ services.AddDbContext<AppDbContext>();
 
 
 //Configuração de Injeção de dependencia
-BootStrap.Configure(services);
+BootStrap.ConfigureBotClientDI(services);
 
 StartUpBot bot = new();
 bot.ConfigureClient(services);

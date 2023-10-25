@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Bot.API",
+    "\\Bot.API\\Controllers",
+    "\\Domain"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\Bot.API\\Controllers\\ConfigBotController.cs",
   "PreviewInSolutionExplorer": false
 }

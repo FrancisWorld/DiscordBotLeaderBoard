@@ -12,5 +12,9 @@ namespace Domain.Interfaces
         void Save(T entity);
 
         IEnumerable<T> GetAll();
+
+        IEnumerable<T> GetAllById(ulong id);
+
+        void Update(T entity);
     }
 }

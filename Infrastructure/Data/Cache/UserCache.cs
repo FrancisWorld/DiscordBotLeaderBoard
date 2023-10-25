@@ -16,14 +16,14 @@ namespace Infrastructure.Data.Cache
 
         public List<User> VefiryCache(ulong guildId)
         {
-            List<User> result = new();
+            List<User> result = new List<User>();
 
             if(_cache.TryGetValue(guildId, out result))
             {
                 return result;
             }
 
-            return result;
+            return Enumerable.Empty<User>().ToList();
         }
 
 

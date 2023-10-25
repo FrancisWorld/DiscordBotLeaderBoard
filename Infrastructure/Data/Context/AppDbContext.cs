@@ -27,11 +27,11 @@ namespace Infrastructure.Data.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source = bot.db");
+                optionsBuilder.UseSqlite("Data Source=C:\\Bot\\bot.db");
             }
         }
 
         public DbSet<User> Users {get; set;}
-        public DbSet<Guild> Guuilds {get; set;}
+        public DbSet<Guild> Guilds {get; set;}
     }
 }
