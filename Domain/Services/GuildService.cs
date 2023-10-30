@@ -25,7 +25,7 @@ namespace Domain.Services
 
                 var newGuild = new Guild(guildId, guildName, ownerId);
 
-                newGuild.RankingTypes = RankingTypes.ByKills;
+                newGuild.RankingTypes = RankingTypes.Kills;
 
                 _repository.Save(newGuild);
             }

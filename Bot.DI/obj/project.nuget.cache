@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ecDScjOU0470ERHWMs4E+AIXIzB6VfbfdHsPnbwCkuvIHBCO6+3Vm3vhslOIyhulEq906y4o6rtNIvit81TVPA==",
+  "dgSpecHash": "11Tge26ermhdKduzeUFUu0lWdH/SKNcIBTbj4JrqY4prBqQ1PtnOwE7TWZlMV42YQcvH1tR4dsM92K7AoCThDQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\T-GAMER\\Source\\Repos\\FrancisWorld\\DiscordBotLeaderBoard\\Bot.DI\\Bot.DI.csproj",
+  "projectFilePath": "C:\\Users\\T-GAMER\\source\\repos\\FrancisWorld\\DiscordBotLeaderBoard\\Bot.DI\\Bot.DI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\T-GAMER\\.nuget\\packages\\fortnite-api-wrapper\\2.3.2\\fortnite-api-wrapper.2.3.2.nupkg.sha512",
     "C:\\Users\\T-GAMER\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.12\\microsoft.data.sqlite.core.7.0.12.nupkg.sha512",

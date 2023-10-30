@@ -9,6 +9,7 @@ namespace Domain.Interfaces
     public interface IApiConsumer
     {
         public bool CheckAccountExists(string nickName);
-        public int GetKillStats(string nickName);
+        public double GetKillStats(string nickName);
+        public double GetWinRate(string nickName);
     }
 }

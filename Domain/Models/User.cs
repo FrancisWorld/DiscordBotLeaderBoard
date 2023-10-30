@@ -4,7 +4,9 @@ namespace Domain.Models
 {
     public class User : TEntity
     {
-        #pragma warning disable
+#pragma warning disable
+        public User() { }
+
 
         public User(ulong id, 
             string gameNickName,
@@ -32,7 +34,10 @@ namespace Domain.Models
         public bool IsRanked { get; set; }
 
         [AllowNull]
-        public int RankPoints { get; set; }
+        public int Kills { get; set; } 
+
+        [AllowNull]
+        public double WinRate { get; set; }
 
         [NotNull]
         public ulong GuildId { get; set; }

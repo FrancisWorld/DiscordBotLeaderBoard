@@ -4,6 +4,7 @@ using Bot.API.InputModel;
 using Domain.Services;
 using Infrastructure.Data.Context;
 using Bot.API.ViewModel;
+using Domain.Interfaces;
 
 namespace Bot.API.Controllers
 {
@@ -12,27 +13,33 @@ namespace Bot.API.Controllers
     public class ConfigBotController : ControllerBase
     {
         private readonly RankService _rankService;
+        private readonly AuthenticationServices _autheticationServices;
 
-
-        public ConfigBotController(RankService rankService)
+        public ConfigBotController(RankService rankService, AuthenticationServices authenticationServices)
         {
             _rankService = rankService;
+            _autheticationServices = authenticationServices;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetRank()
+        public async Task<IActionResult> GetRank(ulong guildId)
         {
+            
             var rank = _rankService.GetRankByGuildId(1038639386646032415);
             var viewModel = new List<UsersViewModel>();
+
+            if(rank.Count == 0)
+                return NotFound("Nenhum usuário dp servidor participa do rank");
+
             foreach (var item in rank)
             {
                 viewModel.Add(
                     new UsersViewModel()
                     {
-                        UserName = item.DiscordNickName,
+                        UserName = item.UserName,
                         ThumbUrl = item.ThumbUrl,
-                        StatsCount = item.RankPoints
+                        StatsCount = (int)item.RankPoints
                     });
             }
 
@@ -40,14 +47,14 @@ namespace Bot.API.Controllers
             return Ok(viewModel);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> PostConfigs(ConfigBotInputModel configBotInput)
         {
 
             _rankService.ConfigureRank(configBotInput.BlockIds, configBotInput.RankingType, 1038639386646032415);
 
             return Ok("Aparentemente deu tudo certo '-'");
-        }
+        }*/
 
     }
 }

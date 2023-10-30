@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.DTOs;
+using Domain.Interfaces;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -19,21 +20,68 @@ namespace Domain.Services.Api_Services
             _guildRepository = guildRepository;
         }
 
-        public List<User> GetRankByGuildId(ulong guildId)
+
+
+        public List<RankedUsersDTO> GetRankByGuildId(ulong guildId)
         {
             var users = _userRepository.GetAllById(guildId);
+            var guild = _guildRepository.GetById(guildId);
 
             if (!users.Any())
             {
-                return Enumerable.Empty<User>().ToList();
+                return Enumerable.
+                    Empty<RankedUsersDTO>().ToList();
             }
 
 
             var rankUsers = users
                 .Where(x => x.IsRanked).ToList();
 
-            return rankUsers.OrderBy(
-                x => x.RankPoints).ToList();
+            if (guild != null &&
+                guild.RankingTypes == RankingTypes.Kills)
+            {
+                rankUsers = rankUsers.OrderByDescending(
+                    x => x.Kills)
+                    .ToList();
+
+                List<RankedUsersDTO> rankResult = new();
+
+                foreach (var item in rankUsers)
+                {
+                    rankResult.Add(new RankedUsersDTO()
+                    {
+                        UserName = item.DiscordNickName,
+                        RankPoints = item.Kills,
+                        ThumbUrl = item.ThumbUrl
+                    });
+                }
+
+                return rankResult;
+
+            }
+
+            else if(guild != null)
+            {
+                rankUsers = rankUsers.OrderByDescending(
+                    x => x.WinRate)
+                    .ToList();
+
+                List<RankedUsersDTO> rankResult = new();
+
+                foreach (var item in rankUsers)
+                {
+                    rankResult.Add(new RankedUsersDTO()
+                    {
+                        UserName = item.DiscordNickName,
+                        RankPoints = item.WinRate,
+                        ThumbUrl = item.ThumbUrl
+                    });
+                }
+
+                return rankResult;
+            }
+
+            return Enumerable.Empty<RankedUsersDTO>().ToList();
         }
 
 

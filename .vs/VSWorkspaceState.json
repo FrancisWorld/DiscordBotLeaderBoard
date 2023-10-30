@@ -3,8 +3,9 @@
     "",
     "\\Bot.API",
     "\\Bot.API\\Controllers",
+    "\\Bot.DI",
     "\\Domain"
   ],
-  "SelectedNode": "\\Bot.API\\Controllers\\ConfigBotController.cs",
+  "SelectedNode": "\\Bot.DI\\BootStrap.cs",
   "PreviewInSolutionExplorer": false
 }

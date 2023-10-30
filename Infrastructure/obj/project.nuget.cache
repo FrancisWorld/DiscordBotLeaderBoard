@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K6L8Cm+OZxJSiUsfcagnioUr58o80v0BE8mq5AnfMQU+2SxnFOU4u/FTB4Wol2n4RP8Nh6r5AQgNlvrJGIikPQ==",
+  "dgSpecHash": "KhsE1ySwgPRURsQgqaZCjjsbLfza+eGWZJERGx70vNS3J4Pf8fAyfQSwkyqebyVq4u5ckAkn7edpgiRmPrXP2Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\T-GAMER\\Source\\Repos\\FrancisWorld\\DiscordBotLeaderBoard\\Infrastructure\\Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\T-GAMER\\source\\repos\\FrancisWorld\\DiscordBotLeaderBoard\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\T-GAMER\\.nuget\\packages\\fortnite-api-wrapper\\2.3.2\\fortnite-api-wrapper.2.3.2.nupkg.sha512",
     "C:\\Users\\T-GAMER\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

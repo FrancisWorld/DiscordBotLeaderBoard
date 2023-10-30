@@ -1,6 +1,7 @@
 using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
+using System;
 
 
 namespace Domain.Services
@@ -46,17 +47,29 @@ namespace Domain.Services
 
                 _cache.SetCache(guildId, rankUsers);
 
-                return AllToString(rankUsers.OrderBy(
-                    x => x.RankPoints)
-                    .ToList(), guild.RankingTypes);
+                if (guild.RankingTypes == RankingTypes.Kills)
+                    return AllToString(rankUsers.OrderByDescending(
+                        x => x.Kills)
+                        .ToList(), guild.RankingTypes);
+
+                else
+                    return AllToString(rankUsers.OrderByDescending(
+                        x => x.WinRate)
+                        .ToList(), guild.RankingTypes);
 
             }
 
             else
             {
-                return AllToString(cacheUsers.OrderBy(
-                    x => x.RankPoints)
-                    .ToList(), guild.RankingTypes);
+                if (guild.RankingTypes == RankingTypes.Kills)
+                    return AllToString(cacheUsers.OrderByDescending(
+                        x => x.Kills)
+                        .ToList(), guild.RankingTypes);
+
+                else
+                    return AllToString(cacheUsers.OrderByDescending(
+                        x => x.WinRate)
+                        .ToList(), guild.RankingTypes);
             }
 
         }
@@ -69,7 +82,7 @@ namespace Domain.Services
             try
             {
 
-                int rankPoints = 0;
+                double rankPoints = 0;
                 
                 //Verifica conta de usuário na API do jogo
                 if (!_api.CheckAccountExists(gameNickName))
@@ -88,9 +101,11 @@ namespace Domain.Services
 
                     #region Logica de rankeamento
 
-                    if (guild.RankingTypes == RankingTypes.ByKills)
+                    if (guild.RankingTypes == RankingTypes.Kills)
                         rankPoints = _api.GetKillStats(gameNickName);
 
+                    else if (guild.RankingTypes == RankingTypes.WinRate)
+                        rankPoints = _api.GetWinRate(gameNickName);
 
                     #endregion
 
@@ -102,7 +117,20 @@ namespace Domain.Services
                         true);
 
                     user.GuildId = guildId;
-                    user.RankPoints = rankPoints;
+
+                    switch (guild.RankingTypes)
+                    {
+                        case RankingTypes.Kills:
+                            user.Kills = (int)rankPoints;
+                            break;
+                        case RankingTypes.WinRate:
+                            user.WinRate = rankPoints;
+                            break;
+                        default:
+                            user.WinRate = 0;
+                            user.Kills = 0;
+                            break;
+                    }
 
                     _userRepository.Save(user);
 
@@ -120,8 +148,43 @@ namespace Domain.Services
         }
 
 
+        public List<string> ConfigureRank(RankingTypes rankingType, ulong guildId)
+        {
+            try
+            {
+                var guild = _guildRepository.GetById(guildId);
+
+                guild.RankingTypes = rankingType;
+
+                _guildRepository.Update(guild);
+
+                var listResult = new List<string>();
+                listResult.Add($"As configurações em {guild.Name} foram atualizadas!");
+                listResult.Add("Sucesso!");
 
 
+                return listResult;
+            }
+
+            catch(Exception ex)
+            {
+                var list = new List<string>();
+                list.Add("Não foi possível atualizar as configurações!");
+                list.Add("Erro");
+
+
+                return list;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Transforma todas as informações em uma lista de string para ser exibido pelo bot
+        /// </summary>
+        /// <param name="userList"></param>
+        /// <param name="rankingType"></param>
+        /// <returns></returns>
         private List<string> AllToString(List<User> userList, RankingTypes rankingType)
         {
             string result = "";
@@ -129,28 +192,46 @@ namespace Domain.Services
             int index = 1;
             string rankingName;
 
-            if (rankingType == RankingTypes.ByKills)
-                rankingName = "Kills";
-
-            else if (rankingType == RankingTypes.ByWinRate)
-                rankingName = "Win Rate";
-
-            else
-                rankingName = "Xp";
-
-
-            foreach (var item in userList)
+            switch (rankingType)
             {
-                result += $"{index} - {item.DiscordNickName} | {rankingName} : *{item.RankPoints}*\n";
+                case RankingTypes.Kills:
+                    rankingName = "Kills";
+                    break;
+                case RankingTypes.WinRate:
+                    rankingName = "Win Rate";
+                    break;
+                default:
+                    rankingName = "Xp";
+                    break;
+            }
 
-                if (index % 10 == 0 || index == userList.Count)
+
+            if (rankingType == RankingTypes.Kills)
+                foreach (var item in userList)
                 {
+                    result += $"{index} - {item.DiscordNickName} | {rankingName} : *{item.Kills}*\n";
+
+
                     resultList.Add(result);
                     result = "";
+
+
+                    index++;
                 }
 
-                index++;
-            }
+
+            else
+                foreach (var item in userList)
+                {
+                    result += $"{index} - {item.DiscordNickName} | {rankingName} : *{item.WinRate}%*\n";
+
+                    //if (index % 10 == 0 || index == userList.Count)
+
+                    resultList.Add(result);
+                    result = "";
+
+                    index++;
+                }
 
             return resultList;
         }

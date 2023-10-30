@@ -28,9 +28,18 @@ namespace Infrastructure.Repositories
 
         public virtual T GetById(ulong id)
         {
-            var entity = _context.Set<T>().SingleOrDefault(x => x.Id == id);
+            try
+            {
+                var entity = _context.Set<T>().SingleOrDefault(x => x.Id == id);
 
-            return entity;
+                return entity;
+            }
+
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public void Save(T entity)

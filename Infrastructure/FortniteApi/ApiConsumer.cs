@@ -13,10 +13,7 @@ namespace Infrastructure.FortniteApi
         public ApiConsumer()
         {
             API_KEY =
-                Environment.
-                GetEnvironmentVariable
-                ("FORTNITE_API_KEY",
-                EnvironmentVariableTarget.User);
+                Environment.GetEnvironmentVariable("FORTNITE_API_KEY");
 
             _client = new FortniteApiClient(API_KEY);
         }
@@ -33,16 +30,34 @@ namespace Infrastructure.FortniteApi
             return false;
         }
 
-        public int GetKillStats(string nickName)
+        public double GetKillStats(string nickName)
         {
             var account = _client.V2.Stats.GetBrV2Async
                 (x => x.Name = nickName).GetAwaiter ().GetResult();
 
-            if(account.IsSuccess)
+            if(account.IsSuccess &&
+                account.Data.Stats.All.Overall != null)
             {
-                var kills = account.Data.Stats.All.Ltm.Kills;
+                var kills = account.Data.Stats.All.Overall.Kills;
 
-                return (int)kills;
+                return kills;
+            }
+
+            return 0;
+        }
+
+
+        public double GetWinRate(string nickName)
+        {
+            var account = _client.V2.Stats.GetBrV2Async
+                (x => x.Name = nickName).GetAwaiter().GetResult();
+
+            if (account.IsSuccess &&
+                account.Data.Stats.All.Overall != null)
+            {
+                var winRate = account.Data.Stats.All.Overall.WinRate;
+
+                return winRate;
             }
 
             return 0;

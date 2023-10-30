@@ -57,18 +57,67 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsRanked")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RankPoints")
+                    b.Property<int>("Kills")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ThumbUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("WinRate")
+                        .HasColumnType("REAL");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GuildId");
 
                     b.ToTable("user", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 385869185198063626ul,
+                            DiscordNickName = "Cleiton Furst",
+                            GameNickName = "Jhpo",
+                            GuildId = 1038639386646032415ul,
+                            IsRanked = true,
+                            Kills = 640,
+                            ThumbUrl = "https://cdn.discordapp.com/embed/avatars/0.png?size=1024",
+                            WinRate = 12.199999999999999
+                        },
+                        new
+                        {
+                            Id = 926292122842312795ul,
+                            DiscordNickName = "camargooo",
+                            GameNickName = "Faker171",
+                            GuildId = 1038639386646032415ul,
+                            IsRanked = true,
+                            Kills = 99,
+                            ThumbUrl = "https://cdn.discordapp.com/embed/avatars/0.png?size=1024",
+                            WinRate = 0.5
+                        },
+                        new
+                        {
+                            Id = 1134185785617293402ul,
+                            DiscordNickName = "yuru44",
+                            GameNickName = "Oyurii",
+                            GuildId = 1038639386646032415ul,
+                            IsRanked = true,
+                            Kills = 93,
+                            ThumbUrl = "https://cdn.discordapp.com/embed/avatars/0.png?size=1024",
+                            WinRate = 10.0
+                        },
+                        new
+                        {
+                            Id = 732999507331252246ul,
+                            DiscordNickName = "VicManzas",
+                            GameNickName = "manzass",
+                            GuildId = 1038639386646032415ul,
+                            IsRanked = true,
+                            Kills = 117,
+                            ThumbUrl = "https://cdn.discordapp.com/embed/avatars/0.png?size=1024",
+                            WinRate = 45.799999999999997
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>

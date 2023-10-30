@@ -14,7 +14,7 @@ namespace Domain.Models
             this.OwnerId = ownerId;
 
             //Default
-            this.RankingTypes = RankingTypes.ByKills;
+            this.RankingTypes = RankingTypes.Kills;
         }
 
         [NotNull]

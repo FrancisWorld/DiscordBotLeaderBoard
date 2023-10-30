@@ -7,6 +7,7 @@ using Domain.Interfaces;
 using Infrastructure.Data.Cache;
 using Domain.Models;
 using Domain.Services.Api_Services;
+using Infrastructure.AuthConfigs;
 
 namespace Bot.DI;
 
@@ -21,7 +22,9 @@ public class BootStrap
         services.AddTransient(typeof(UserService));
         services.AddTransient(typeof(GuildService));
         services.AddTransient(typeof(ApiConsumer));
+        services.AddTransient<AuthenticationServices>();
         services.AddTransient(typeof(IRepository<>), typeof(GenericRepositorie<>));
+        services.AddTransient(typeof(IKeyManager), typeof(KeyManager));
         services.AddTransient(typeof(IRepository<User>), typeof(UserRepository));
         services.AddTransient(typeof(IApiConsumer), typeof(ApiConsumer));
         services.AddSingleton(typeof(IUserCache), typeof(UserCache));
@@ -39,8 +42,16 @@ public class BootStrap
     {
         services.AddTransient<RankService>();
         services.AddScoped<AppDbContext>();
-        services.AddTransient(typeof(IRepository<>), typeof(GenericRepositorie<>));
         services.AddTransient<ConfigBotService>();
+        services.AddTransient<AuthenticationServices>();
+        services.AddTransient(typeof(IRepository<>), typeof(GenericRepositorie<>));
+        services.AddTransient(typeof(IKeyManager), typeof(KeyManager));
         services.AddTransient(typeof(IRepository<User>), typeof(UserRepository));
+
+
+        var _services = services.BuildServiceProvider();
+
+        var dbCntext = _services.GetService<AppDbContext>();
+        dbCntext.Database.EnsureCreated();
     }
 }

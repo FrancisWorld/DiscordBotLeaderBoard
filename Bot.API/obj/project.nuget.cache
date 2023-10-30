@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2UL8Uoia4Y3pPm0D6tmRKqFj7bnB0IlItN1i6snmST5j1HLGJLTGlAurZ9GnFaggo52t3yDfcGcvk9qbJMnD2Q==",
+  "dgSpecHash": "YwA+PnmBh1umu1U2ufXElKc3BEoiDozUNuZYwdIui05si0+gI/3UVRzcneGJC8Wx3lGJJPJShJRaDPiqmKcyTw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\T-GAMER\\Source\\Repos\\FrancisWorld\\DiscordBotLeaderBoard\\Bot.API\\Bot.API.csproj",
+  "projectFilePath": "C:\\Users\\T-GAMER\\source\\repos\\FrancisWorld\\DiscordBotLeaderBoard\\Bot.API\\Bot.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\T-GAMER\\.nuget\\packages\\fortnite-api-wrapper\\2.3.2\\fortnite-api-wrapper.2.3.2.nupkg.sha512",
     "C:\\Users\\T-GAMER\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.10\\microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",

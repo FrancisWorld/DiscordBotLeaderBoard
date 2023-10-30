@@ -31,7 +31,7 @@ namespace Infrastructure.Data.Cache
         {
             _cache.Set(guildId, users, new MemoryCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(20)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
             });
         }
     }
