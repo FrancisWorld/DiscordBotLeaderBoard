@@ -13,7 +13,7 @@ namespace Bot.SlashCommands
     internal sealed class UserCommands : ApplicationCommandModule
     {
 
-        private const string siteUrl = "https://leaderboard-nine-amber.vercel.app/";
+        private const string siteUrl = "https://discord-bot-leader-board.vercel.app/";
         private readonly UserService _userServices;
         private readonly AuthenticationServices _authenticationServices;
 
